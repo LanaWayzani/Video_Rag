@@ -1,0 +1,352 @@
+[
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_0.0s.png",
+    "timestamp": 0.0,
+    "text": "So, hello everyone. Welcome to the PC seminar. Today we have with us Professor Aamir Mouad",
+    "text_start": 0.0,
+    "text_end": 8.0
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_3.0s.png",
+    "timestamp": 3.0,
+    "text": "from American University of Beirut. And he'll be talking on the GERT and parameterized complexity of token sliding and token jumping. Thank you for joining us, Professor. Over to you now. Thank you, Prasibha. Thank you for having me. It's a real pleasure to be here. So, all right. Let's jump right into it. So, since I did not really know the audience too well, I made the assumption that many of you maybe have not seen this area of combinatorial reconfiguration problems. So, I decided what I'm going to do is I'm going to give a gentle introduction to the area just to show you how many exciting problems and open problems are there. And I will talk more about token jumping and token sliding specifically, what we know about them, what we knew about them before we started working on this project, what we managed to discover and the tons of questions that remain to be answered. And it's a really, I mean, the questions are so nice to state, so easy to state, and they are accessible really to researchers at any level, which is one of the reasons why I enjoy working on these problems. So, hopefully, you'll get to enjoy them too. So, before I start, I should point out that this is joint work that started back in the combinatorial reconfiguration workshop almost two years ago. And it's joint work with Valentin Barchet, Nicolas Busquet, Cl\u00e9ment Dallard and Carl Lohmer, who is my master's student. All right. So, the outline of the",
+    "text_start": 8.0,
+    "text_end": 115.47999999999999
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_114.0s.png",
+    "timestamp": 114.0,
+    "text": "talk, it's going to be in four sections. I will give a gentle introduction to combinatorial reconfiguration because I know many of you might not have seen such problems. Then I will talk about token jumping and token sliding, what we know about them in terms of classical complexity or one dimensional complexity. Then I'll talk about the parametrized complexity of these two problems and what we know as of today as we speak, and what are the problems that remain to be solved. And then the last part of the lecture is where I will put some of the technical stuff to show you, to give you an idea about how we prove things when we deal with such problems and where are the difficulties and what kind of techniques have been developed. So, I try to keep the technical part as light as I could so that really we, I mean, I can focus on the big picture and the questions to be asked and answered. So, if you have any questions along the way, please feel free to interrupt me either in the chat or by unmuting yourselves. So, don't worry about leaving the questions till the end. You can interrupt me whenever you feel, whenever I say something that doesn't make sense. Hopefully that won't happen too often. Alright, so what is combinatorial reconfiguration? So, the best way I think to introduce is with a",
+    "text_start": 115.47999999999999,
+    "text_end": 203.52
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_201.0s.png",
+    "timestamp": 201.0,
+    "text": "familiar example, which is one player games and the most common one that we use is the 15 puzzle game. So, for those of you who don't know the 15 puzzle games, so you're given like a four by four grid and you have one empty square and basically you have all the remaining 15 squares are numbered from 1 to 15 and they come in some ordering and your job is to basically move the squares around so that all the numbers become ordered. So, it's a by row, so they have to be ordered this way. So, if you notice in this figure, the only problem is that 14 and 15 are reversed, but the only moves that you're allowed to do is to basically move a number into the empty square. And basically you have to do a sequence of moves so that you get all of the numbers in order. And for those of you who know this game, this example that I have on the slide is actually unsolvable. There is no way you can flip the order of 14 and 15 in this puzzle. And I have a link here if you want to actually play the puzzle online, which is pretty fun. So, why do I start my talk by talking about 15 puzzle? It's because it's really, I mean, the way you solve the 15 puzzle tells you a lot about the area of combinatorial reconfiguration. So, the standard way we would think about the 15 puzzle is by looking at the state space or what",
+    "text_start": 203.52,
+    "text_end": 297.68
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_291.0s.png",
+    "timestamp": 291.0,
+    "text": "we call the reconfiguration graph of the 15 puzzle. So, what does that graph consist of? Well, we have one vertex or one node in this graph for each possible configuration of the puzzle. So, basically each possible configuration, so it would be a possible permutation of the 15 numbers in addition to where you're going to put the empty square. Each one of those will be a vertex in the graph. And now we connect two vertices in that graph whenever one can be reached from the other by a single move. And what do we mean here by a single move? Where it's basically just moving a number into the empty square. So, if you look at the top node here in this graph, there are four possibilities that you can do in one move, which we call a reconfiguration step, which is you can move nine into the empty square, you can move three into the empty square, 12 or 15. And that gives us basically four neighbors of that vertex in the graph. Okay, and we call this whole graph the reconfiguration graph, or the state space, if you're more comfortable thinking about states, the states of the game. So, now given this graph, the reconfiguration graph, there are tons of very interesting questions",
+    "text_start": 297.68,
+    "text_end": 378.32
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_378.0s.png",
+    "timestamp": 378.0,
+    "text": "that you can ask about it. There are structural questions and there are algorithmic questions. And these are typically the types of questions that we're interested in, in this area of combinatorial reconfiguration. So, a couple of examples of structural questions would be, well, the simplest one would be how big is this reconfiguration graph? How many vertices or how many edges? And that's usually not a very hard question to answer in terms of upper and lower bounds. More interestingly, you could ask is this reconfiguration graph connected? Or can I reach any state starting from any other state by a sequence of legal moves? And as I told you before, for the 15 puzzle, the reconfiguration graph is definitely not connected because there was no way to reverse 14 and 15 in the previous example that I showed you. And you can easily prove that by the way. So, when it's not connected, another question would be how many components does it have? Is there some sort of nice structure to the components of this graph? And then another question would be what is the diameter of this reconfiguration graph, or of each one of its components? And that's usually a very important question to ask when you're dealing with one player games, because this could tell you like what would be the worst possible shortest path to reach a target configuration or to solve your game, to win your game, for example. And in the literature, this is sometimes known as God's number, which would be the diameter of the reconfiguration graph. And these are all very interesting structural questions to ask about this reconfiguration graph. Now, on the algorithmic side or the computational side, there's the obvious question of if I'm given",
+    "text_start": 378.32,
+    "text_end": 494.56
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_489.0s.png",
+    "timestamp": 489.0,
+    "text": "a starting state and some ending state or target state, like in the case of the puzzle game, I'm given some starting state and we know what the goal state is. So here, one decision problem would be to answer the question whether it's possible to get to the target state starting from some initial state that is also given to me. So you could decide to solve this problem either as a decision problem or as a search problem, which would give you the actual sequence of steps that will take you from a state to the target state. Other interesting computational problems, is it",
+    "text_start": 494.56,
+    "text_end": 532.8000000000001
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_531.0s.png",
+    "timestamp": 531.0,
+    "text": "always possible to go from one configuration to any other? And this is basically also related to the structural question about the connected components. And the last question that I will mention, which is also interesting, is how fast can you go from one configuration to another? Meaning, can you do it in at most case steps? There is a question. I should wait or no? Okay. All right. So think about all of these questions that we paused using the simple 15 puzzle game.",
+    "text_start": 532.8,
+    "text_end": 572.16
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_570.0s.png",
+    "timestamp": 570.0,
+    "text": "And now we're going to look at a lot of other possible problems where the same reconfiguration graph can be extracted and we can ask the same set of questions. So all of you here are familiar with the KSAT problem. So you're given a Boolean formula and you're wondering",
+    "text_start": 572.16,
+    "text_end": 591.5999999999999
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_588.0s.png",
+    "timestamp": 588.0,
+    "text": "if you can satisfy this formula by assigning values to the variables. And we know that this is NP complete for K greater than or equal to three. So now how can you transform this into a reconfiguration problem? Well, it's very simple. So now you're given a formula and you're given two satisfying",
+    "text_start": 591.6,
+    "text_end": 613.36
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_609.0s.png",
+    "timestamp": 609.0,
+    "text": "assignments. So you can think of those satisfying assignments as bit vectors. And so now the question that you can ask is, can I go from the first satisfying assignment S to the next one by basically flipping one bit at a time under the condition that I remain a satisfying assignment at all times? And notice that without this condition, the problem is trivial. So you can basically just flip the bits however you like and reach S from T or T from S. But once you add this constraint of you should remain a satisfying assignment, the problem becomes way more interesting. And you can think of this problem again as walking in the solution space of the given formula of all the satisfying assignment of the formula F. All right, so that's the SAT reconfiguration problem. Let's look at another example. Graph",
+    "text_start": 613.36,
+    "text_end": 676.0799999999999
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_675.0s.png",
+    "timestamp": 675.0,
+    "text": "coloring. We all know it, we all love it. You're given a graph and some integer K and you are asked whether you can properly K color the graph G. And we know again that this is NP complete for K greater than or equal to three. How do you transform that into a reconfiguration problem? Well, now you're given a graph, you're given two colorings of the graph, alpha and beta.",
+    "text_start": 676.08,
+    "text_end": 700.88
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_696.0s.png",
+    "timestamp": 696.0,
+    "text": "And the question is, can you recolor alpha to get the to beta? But you need to recolor one vertex at a time and you need to remain a proper K coloring throughout. Same idea again leads us to this notion of the reconfiguration space where we are looking at the K colorings of the graph and how they are connected under this adjacency relation that we define, which is a single vertex recoloring. The final example that I will mention, which will be basically",
+    "text_start": 700.88,
+    "text_end": 734.88
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_735.0s.png",
+    "timestamp": 735.0,
+    "text": "what we will focus on in the rest of the talk, is token placement, I call it. But as you will all guess, this is the famous independent set problem. But we will look at it as a token placement problem because it will be more useful for the rest of the talk. So you're given a graph G and an integer K. And the question is, can you place K tokens on your graph, K black tokens, so that no two of these tokens share an edge? And of course, we all know that this is an NP complete problem. So how can you transform this problem into a reconfiguration problem? Again, now I'm given a graph, two independent sets of the graph, each of size K. And the question is,",
+    "text_start": 735.44,
+    "text_end": 776.4799999999999
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_771.0s.png",
+    "timestamp": 771.0,
+    "text": "can I go from one independent set to the other under what rule? So here defining the rule for independent set, how can I go between consecutive independent sets, becomes a little bit less obvious. And there are two main strategies that people have attempted. So the first rule is what we call token jumping. So you are basically allowed to take any token on your graph and jump it to any other vertex on the graph, assuming that it doesn't have a token and that you maintain an independent set at all times. So for example, in this example that I have here, it would be perfectly okay to take this token here and jump it to this vertex here. Or I could also take this token here and jump it to this vertex here. So that no, actually that would violate the independence. So you can jump to any other vertex as long as you maintain independence. And we call that the token jumping rule. The other rule is basically token sliding. So in this case, we only allow a token to slide along edges of the graph. So a token can only move to an adjacent vertex, assuming of course this does not violate independence. So now we have two different reconfiguration graphs we can think about. We can think about the reconfiguration graph under the token jumping adjacency, and we can think about the reconfiguration graph under the token sliding adjacency. And we're going to talk about these two different problems because they do actually behave quite differently and they produce quite interesting results. Like the difference between the two, we don't fully understand yet, but we kind of know that token sliding can be harder than token jumping. But there's still a lot of questions to be answered. All right, so some of you might be",
+    "text_start": 776.4799999999999,
+    "text_end": 900.24
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_900.0s.png",
+    "timestamp": 900.0,
+    "text": "asking why do we care about studying such problems? There's a lot of motivations out there. I mean, sometimes I would say you don't need motivation. They're interesting. There's a lot of open questions that we need to answer. But you can also think about reconfiguration problems as another way of modeling real world algorithmic problems because you usually never start from scratch. When you're trying to solve real world problems, you usually start from something and you're trying to improve it or make it better or change it to something more appropriate. Another very good application of studying these problems is that they give you a better understanding of solution spaces, which can be very important for other areas as well. And they have been used in statistical physics, quantum computing, and in complexity theory, combinatorics, and robotics, and hopefully many more applications to come. But what I would tell you is that there are so many very interesting problems that are so easy to start thinking about without having too much background, which is why I think this is a very nice area to start working on at any level in your research career. All right, so I'll take a break here and take questions if there are any. And then we will dive",
+    "text_start": 900.24,
+    "text_end": 984.72
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_981.0s.png",
+    "timestamp": 981.0,
+    "text": "into the token jumping and token sliding problems, what we know about them in terms of classical complexity, and what was basically the starting point for the project that led us to this paper. Any questions at this point? I apologize for the small context which I am interrupting here. So this is just to announce for the PC 301 workshop that will be happening in December end. And this will be slightly different from the previous two workshops. First major difference, this will be online. Second is some advanced topics will be discussed. So anyone who wants to participate in this will be able to anyone who intends to explore somewhat more complex topics in parameterized algorithms is invited to have a check, they can look at the website that has been shared on the chat. And if you wish, you can register simply by filling a form that is linked at the bottom of the web page. So just to inform you all about it, and sorry for the interruption, Professor. Now, you can come. All right. All right. So let's start talking about token jumping, token sliding, and a little bit of classical complexity. I know everybody here knows about P and NP, so I'm not going to talk about",
+    "text_start": 984.72,
+    "text_end": 1067.2
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_1062.0s.png",
+    "timestamp": 1062.0,
+    "text": "this. Some of you might not be familiar with the PSPACE class. So just a quick note, that's as much as you will need to know for this talk is that PSPACE is the set of all decision problems that can be solved using a polynomial amount of space. And the reason why I mentioned this class, it's because many, many, many, many reconfiguration problems actually are PSPACE complete. Okay. And so what we know the standard inclusion is we know that P is contained in NP, which is",
+    "text_start": 1067.2,
+    "text_end": 1098.48
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_1098.0s.png",
+    "timestamp": 1098.0,
+    "text": "contained in PSPACE. But a very useful thing about PSPACE is that Savage proved that it's equal to NP space. So polynomial space and non-deterministic polynomial space are the same class, basically. And that's extremely useful when you start to think about reconfiguration problems, because if you think of a reconfiguration problem where you're given some state and you want to reach the other one, so basically you can solve that easily in non-deterministic polynomial space. So basically you can solve that easily in non-deterministic polynomial space, which basically implies that they are in PSPACE. But actually you can show a lot more than that.",
+    "text_start": 1098.48,
+    "text_end": 1143.44
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_1137.0s.png",
+    "timestamp": 1137.0,
+    "text": "You can show that many, really many reconfiguration problems are actually PSPACE complete, which is not surprising. The fact that many of these reconfiguration problems are PSPACE complete is not very surprising. And them not being in NP is because they don't always have polynomial size certificates, which also makes sense, because sometimes the number of steps that you need to take to go from one configuration to the other might very well be exponential in the graph size. But there are also some extremely surprising results, and these are some of the results, some of my favorite results in the area. So for example, you all know that coloring is NP complete even for k equals three. However, it turns out that if you try to solve the recoloring problem for k equals three, it's actually polynomial time solvable. So if I give you two, three colorings of a graph and I ask you, is there a path between them that recolors one vertex at a time and never is and is always a valid recoloring, then this problem can be solved in polynomial time. And the recoloring problem only becomes PSPACE complete for k equals four and more. Right, so that's the first surprising result. Another very surprising result is that, as you're all FPT experts here, I know that you're all familiar with the fact that usually when we study problems on graphs of bounded bucket width, path width, tree width, they tend to become easier. It turns out that that's not really the case for reconfiguration problems, at least for token sliding and jumping, which is the two problems that are related to independent set. It turns out that those two problems remain PSPACE complete even if you have a graph of constant tree width or path width or even bucket width. So a very, very, very simple graph structure, still the problem remains hard. All right, and finally, the last theorem that I also like a lot, shows you basically that sliding and jumping behave differently. And it was shown that if you restrict yourself to bipartite graphs, where we know that max independent set can be solved in polynomial time, if you restrict yourself to those graphs, it turns out that token jumping is NP complete, whereas token sliding is PSPACE complete, which is a strange difference between the behavior of those two problems. All right. So in fact, we know a lot more about token sliding and token jumping. These",
+    "text_start": 1143.44,
+    "text_end": 1319.6000000000001
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_1317.0s.png",
+    "timestamp": 1317.0,
+    "text": "problems have been at the heart of the area of combinatorial reconfiguration. They have been studied so much, and we know so much about them, at least in terms of standard or classical complexity. So some of the important results for our paper, that we're going to focus on, is this result. So that's going to be the starting point of the results that we will discuss next when we move to parametrized complexity. So the fact that token sliding and token jumping are PSPACE complete and then NP complete respectively on bipartite graphs was the starting point of our next paper. But there are some very interesting results here that are also worth mentioning. So the first one is the first one, which is the first one, but for example, for even-hole free graphs, we know how to solve token jumping in polynomial time, but the complexity of independent sets even remains open on this class of graphs. And the complexity of token sliding also remains open, so we don't know how to check if given two independent sets, I can slide one to the other. Can you answer that question in polynomial time for even-hole free graphs? For split graphs and cordial graphs, they also behave extremely differently, token sliding and token jumping. So token sliding is PSPACE complete on split graphs and cordial graphs, while token jumping is polynomial time. And that is some of the reasons why we feel that token sliding is harder usually than token jumping, but it's not always the case. All right, so that's it for classical complexity.",
+    "text_start": 1320.24,
+    "text_end": 1427.52
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_1428.0s.png",
+    "timestamp": 1428.0,
+    "text": "So now let's move on to parameterized complexity, and let's basically think about how you can",
+    "text_start": 1429.8400000000001,
+    "text_end": 1434.8
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_1434.0s.png",
+    "timestamp": 1434.0,
+    "text": "parameterize those two problems, token jumping and token sliding. So there's the obvious parameter would be the number of tokens, right? So one of the obvious parameters would be the number of tokens, and we're going to denote that by K. Another parameter would be the length of the sequence, like how many steps does it take to go from one independent set to the other? You can also obviously parameterize by tree width or path width or any combination of the above. When we started working on this problem, our initial aim was to basically study the parameterized complexity of token sliding and token jumping on bipartite graphs using the parameter K, number of tokens, right? Because remember, we saw that token sliding is PSPACE complete on bipartite graphs and token jumping is NP-complete. So we were interested to see if basically this is going to give us W1 hardness for token sliding and FPTness for token jumping. At least that was the initial hope. That's why we started working on this project. We weren't able to answer the two questions. So we",
+    "text_start": 1434.8,
+    "text_end": 1509.36
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_1506.0s.png",
+    "timestamp": 1506.0,
+    "text": "were able to answer one side of the question, which is we were able to show that on bipartite graphs, token sliding is in fact W1 hard. So token sliding parameterized by the number of tokens on bipartite graphs is W1 hard. We were not able to answer the question for token jumping. So that is still an open question. So having answered that question and failed on the next question, we started thinking about ways to basically simplify a little bit some of these questions. So the next thing we asked ourselves, so there are two directions where you can try and simplify. So the next thing we asked ourselves was, okay, so from bipartite graphs, how can I go to other classes of graphs and see where token jumping becomes hard or easy? And it turned out that if you basically exclude only C4 from your graph, because in bipartite graphs, you're excluding all odd cycles. So we started thinking about what kinds of cycles affect the behavior of those problems. So the first question was, what about C4 free graphs? And it turned out that both problems remain W1 hard on C4 free graphs. Now, if you exclude C3 and C4, it turns out that token jumping becomes FPT, has an order K squared kernel, but for token sliding, we were not able to determine the complexity. Now, if you go to the other side of that, so what if we enforce both bipartiteness as well as C4 freeness? So in that case, we were able to show that both problems became FPT. Okay, and basically the bipartite bounded degree graphs was just a stepping stone to get to the bipartite C4 free graph result. So let me repeat that maybe slightly more clearly. So after basically answering the first question, which was bipartite graphs, we were able to show that token sliding was W1 hard, but we were not able to determine the complexity of token jumping. So then we went to C4 free graphs, and we were able to show that both problems are actually W1 hard. Then if we added one more constraint, which was C3 C4 free graphs, we got FPTness for token jumping, but it remained open for token sliding. And on the other side of the spectrum, so if we keep bipartite and enforce the C4 freeness, we get FPT for both problems. And as a side note, this blue result is not part of our paper. This was known prior to our paper. So any questions about the results? No questions. All right, cool. So lots of open problems. The first and obvious one is what is the parameter is token jumping FPT",
+    "text_start": 1509.36,
+    "text_end": 1730.24
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_1725.0s.png",
+    "timestamp": 1725.0,
+    "text": "parameterized by K on bipartite graphs. And that's really, I mean, that was the initial question that we set out to answer and couldn't. So that remains open. And then the second question and it's so I will not be going over the hardness reduction for token sliding on bipartite graphs,",
+    "text_start": 1730.24,
+    "text_end": 1753.44
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_1752.0s.png",
+    "timestamp": 1752.0,
+    "text": "because it's quite technical. I don't feel a talk is the right place to go over it. But if you go over the reduction, you will see that the two problems really behave differently.",
+    "text_start": 1753.44,
+    "text_end": 1767.76
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_1767.0s.png",
+    "timestamp": 1767.0,
+    "text": "And there doesn't seem to be a chance to basically make the same type of reduction work for token jumping. So the second interesting open question is how about token jumping parameterized by K on triangle free graphs? That's basically even more general than question one. Right? So, and the reason why I mentioned this question separately is because almost every reduction that I know of includes large cliques. So you need to use large cliques in your reductions. So how about if we don't allow triangles and large cliques? So can we then say something about the problem? So that's for token jumping. Now, when you go to token sliding, so the open problem is what happens for token sliding on graphs of girth at least five? So if they are C3, C4 free. Or you can even make that a bit weaker and ask for any girth of at least P, for some constant P. And for all of these questions, of course, polynomial kernels would be interesting as well. Because in our case, we do get polynomial kernels for the FPT.",
+    "text_start": 1767.76,
+    "text_end": 1844.96
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_1842.0s.png",
+    "timestamp": 1842.0,
+    "text": "The polynomials are not great, but polynomial regardless. All right. So in the rest of the talk, I will try to cover some of the technical stuff. And as",
+    "text_start": 1847.84,
+    "text_end": 1861.36
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_1860.0s.png",
+    "timestamp": 1860.0,
+    "text": "promised, I will try to keep it as light as possible so that I can give you some of a lot",
+    "text_start": 1861.36,
+    "text_end": 1866.4799999999998
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_1866.0s.png",
+    "timestamp": 1866.0,
+    "text": "of the intuition and techniques that are used in this paper and that are generally used when dealing with reconfiguration problems. So the first result that we will go over is this W hardness on C4 free graphs. Right? For both token sliding and token jumping. It's the same reduction and you will get both results because we will be using maximum independent sets. So if you're trying to basically do token sliding from one maximum independent set to the other or token jumping, these two rules become equivalent. Jumping becomes equivalent to sliding. So the first result that becomes equivalent to sliding. So when you're dealing with maximum independent sets, these two basically rules are the same. And that's what we're going to do. But what we're going to prove actually is a stronger theorem. What we're going to prove is the following theorem. If you take any P greater than or equal to four, then both problems are W hard on C4, C5, dot, dot, dot, up to CP free graphs. Which implies, of course, C4 free graphs. But you can basically exclude any cycles from C4 up to CP for constant P and the problems will remain W1 hard. So how do we prove this result? In fact, we use a",
+    "text_start": 1866.4799999999998,
+    "text_end": 1958.8799999999999
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_1956.0s.png",
+    "timestamp": 1956.0,
+    "text": "In fact, we use a known reduction from a problem known as grid tiling, which is a W1 hard problem. And grid tiling is reduced to the independent set problem on C4 up to CP free graphs. And that reduction was used to show that independent set remains W1 hard if you exclude C4 up to CP for any constant P. But what is interesting and useful in that reduction is the graph that is obtained from the reduction. So the graph that is obtained from the reduction has three properties that are going to be useful to us. The first property is that you can partition the graph into basically 8k squared into P plus one cliques. So you have a bunch of cliques, each of size n, and all of the edges basically are between the cliques. But that's it. That's it. That's the whole of the graph. It's a bunch of cliques and edges between them. Of course, the more important property as well here is that this graph is going to be C4 up to CP free. It will not have any of those cycles as an induced subgraph. And it's an equivalent instance to the grid tiling instance. And that basically gives you a W1 hardness of independent set on this class of graphs. So notice in this case that an independent set of size 8k squared into P plus one will have to be a maximum independent set because that's how many cliques we get in the resulting graph. And that's basically the sizes that we will be working with more than the size of the graph. We will be working with more or less up to some modifications. But this will allow us to basically conclude that both sliding and jumping are hard on this class of graphs. So how do we use this for showing hardness of token sliding and token jumping? And let's",
+    "text_start": 1958.88,
+    "text_end": 2088.48
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_2085.0s.png",
+    "timestamp": 2085.0,
+    "text": "focus on token sliding for now because it's going to be the same anyway. So we have those cliques and some edges that go between the cliques. So the first attempt would be as follows. We will add a universal vertex to each one of the cliques and we will call this the starting set or the starting independent set. And then we add another universal vertex to each one of the cliques and call this the target independent set. And now basically we have our instance of token sliding. We want to slide everybody in S down to T. So notice that this is useful because we don't introduce any of the forbidden cycles. So we are still fine. And if we could guarantee that all of the tokens will be on the cliques simultaneously, then this will imply an independent set in the original graph, which concludes our proof. But unfortunately in this case, we definitely cannot conclude that because each red token can slide independently here and then here and then the next one can follow, et cetera, et cetera, et cetera. So you need some way of forbidding these tokens to behave freely. We want to make ensure that they will all be inside the cliques simultaneously and we will be done. And notice that we're going to have 8k squared and 2p plus one tokens, right? One for each clique and two universal vertices for each clique. So how do we fix this simultaneity issue? Well, here's how we can do it. So instead of simply",
+    "text_start": 2088.48,
+    "text_end": 2194.2400000000002
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_2190.0s.png",
+    "timestamp": 2190.0,
+    "text": "adding universal vertices, we're also going to add an edge between every two universal vertices of a clique. And then we're going to add something that we call a switch. And in this case, it's a simple edge and the red token here needs to go to the blue position, right? So now we have one extra token inside our graph. But now notice what happens. If any red token wants to come to the blue position, then this red token needs to be moved to this position before. And if you move that token up to the blue position, then you can no longer have any of the red tokens on the universal vertices, which means that they will all have to be simultaneously inside the cliques. And now we get the behavior that we want. So now we can guarantee that if there is a sequence that takes the red tokens to the blue position, then some way along that sequence, the tokens are all going to be within the cliques. Unfortunately, what happened here is we might have introduced some of the forbidden cycles. We can no longer guarantee that this is C4 up to CP3. So what you can do in this case to solve this problem, and I'm not going to go into the details, but the intuition should",
+    "text_start": 2194.2400000000002,
+    "text_end": 2280.7999999999997
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_2280.0s.png",
+    "timestamp": 2280.0,
+    "text": "be pretty clear, is that you can subdivide those edges, make them long enough so that you don't introduce any forbidden cycles, and add appropriate tokens inside of them to get the same behavior. Because notice that the number of such edges is bounded by a function of K, by a function of",
+    "text_start": 2280.8,
+    "text_end": 2302.2400000000002
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_2298.0s.png",
+    "timestamp": 2298.0,
+    "text": "yes, K and P in this case. So you can make these edges, subdivide them as many times as needed, add as many tokens as needed to maintain all the properties that we need and to maintain that we're going from one maximum independent set to the other, which will give you W1 hardness for both token sliding as well as token jumping. All right.",
+    "text_start": 2302.24,
+    "text_end": 2331.76
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_2328.0s.png",
+    "timestamp": 2328.0,
+    "text": "Questions? No questions. All right. So let's keep going. So now I'm going to talk about some positive, a positive result. So the result that I'm going to",
+    "text_start": 2334.8,
+    "text_end": 2357.68
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_2352.0s.png",
+    "timestamp": 2352.0,
+    "text": "talk about is this one here. Right? So I'm going to show you that on C3, C4 free graphs, token jumping is actually FPT and has a quadratic kernel. But again, what we will show is a stronger result. So what we will show is the following theorem. What we will show is can be summarized as follows. So if you look at any graph or at any instance of the token jumping problem. So remember an instance of token jumping has the input graph, the starting set, the target set and K as the number of tokens. The target set and K as the number of tokens. So let me try and draw something here. So if you look at your graph, you can kind of decompose it into something which is more or less as follows. So you have S, you have T, their intersection need not be empty. And then you have the neighborhood of S union T. And then you have the rest of the graph. So we're going to call the rest of the graph H and we're going to call the closed neighborhood of S union T or if you will, this yellow part here, we call that J. Right? So we can think of our problem of our graph as being decomposed into those two areas, H and J. Okay, so the theorem states the following. If H is epsilon sparse, where epsilon sparse means that the number of edges is at most n squared minus epsilon, positive epsilon. So if H is epsilon sparse and J is C3, C4 free, then the problem admits a kernel which is that big, k squared plus k into one plus one over epsilon. So notice now that we only need that H is epsilon sparse and we only require C3, C4 freeness inside J, which is S union T closed neighborhood, closed neighborhood of S union T. And this idea is actually is not a new idea. So this idea is, okay, I had the drawing here, I should have used it. So the idea comes from, has been used before and it's what we call the",
+    "text_start": 2357.68,
+    "text_end": 2516.96
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_2511.0s.png",
+    "timestamp": 2511.0,
+    "text": "buffer technique for the token jumping problem. And the intuition behind the buffer technique is very simple. So if I have S union T, but somewhere in the graph, which is not in the closed neighborhood of S union T, I have a case sized independent set, then you are done. Right? If I have a case sized independent set in H, then you're done. You can basically take all the tokens on S, jump them into those independent yellow vertices in H and then jump them back to T. So in some sense, when H has a large independent set, then you're done. If H has a large independent set, that's the easy case. Right? You're done. If you can find a large enough independent set in H, you're done. And that's what we call the buffer technique, because it's been also used to show that the problem is FPT on planar graphs, for example, or K3J free graphs. So graphs without large bi-clinks. So it's a well-known technique. All right. So what do we show? So we're going to use the buffer technique and we're going to combine",
+    "text_start": 2516.96,
+    "text_end": 2589.12
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_2586.0s.png",
+    "timestamp": 2586.0,
+    "text": "it with something else. So we show that you have a yes instance whenever one of those two conditions is true. The first condition is that H is epsilon sparse and contains more than this many vertices. And this is relatively easy. When you contain this many vertices and you are epsilon sparse, then you will have a K-size independent set. And that's basically the buffer technique. When H is epsilon sparse and has that many vertices or more, then H is guaranteed to have an independent set of size K and you're done. So now you are stuck with what happens inside J. Or the closed neighborhood of S union T. And it turns out there, if you have C3, C4, freeness, the only thing you need on top of that to guarantee a yes instance is a vertex of degree at least 3K. So if you have C3, C4, freeness inside J and the vertex of degree 3K, then you get a yes instance. So let me prove those two statements separately because they will be basically what we need for the final theorem, for the final kernel. So the first lemma, as I told you, if H is epsilon sparse and has that many vertices, then H is epsilon sparse and contains more than this many vertices, then it's a yes instance because you have a K-size independent set in H.",
+    "text_start": 2589.12,
+    "text_end": 2680.5600000000004
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_2676.0s.png",
+    "timestamp": 2676.0,
+    "text": "The idea of this proof is simple. It's a counting argument. And what you need to do basically first is to show that H must contain a vertex of degree less than N over K. And then basically you have to have a K-size independent set in H. So you have to have a K-size independent set in H. Less than N over K. And then basically you apply the standard greedy packing algorithm for constructing an independent set of size K. And the reason you show that, the way you show that H has a vertex of degree less than N over K is, again, standard counting argument and the handshaking lemma. So if the minimum degree in H was at least N over K, then the number of edges would be at least N squared over 2K, which will only happen in an epsilon sparse graph when N is less than or equal to K to the power 1 over epsilon. And the rest of the proof is basically an induction on K. Okay. And so that shows you that when you do have an epsilon sparse graph with more than this many vertices, then we have a yes instance. All right. So how about the second part of the claim? So now what happens if we have a C3, C4,",
+    "text_start": 2681.2000000000003,
+    "text_end": 2763.2
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_2760.0s.png",
+    "timestamp": 2760.0,
+    "text": "free J that has a vertex of degree 3K? Well, let's see what happens. So if we have a vertex of degree 3K, and I'm going to circle it here in yellow. So how can the neighborhood of that vertex look? Well, we know that J is C3 free. So the blue edges cannot exist, which means that the neighborhood of the yellow vertex is an independent set inside J, not in the whole graph. Well, in fact, in the whole, well, no, because we're only talking about J as a subgraph here. Right? So the blue edges cannot exist because otherwise we will get a C3 inside J. All right. So now let's look at the other vertices in S union T. The other, the second observation that you need is that any vertex other than the yellow vertex can have at most one neighbor in common with the yellow vertex. Because if you do have two neighbors in common, then you will get a C4. So now what happens if we have 3K vertices in the neighborhood of the yellow vertex? Well, at most 2K of them can be connected some vertex in S union T, and you will get at least K of them, some K of them here that are only connected to the yellow vertex. And so now basically, instead of using a buffer inside H, we have just found a buffer inside J, and we can use the same strategy. We can jump all the tokens here, starting of course by the yellow token, and then jump them to where they need to go. So now combining those two observed lemmas together, if you will, we get the following theorem. So if H is alpha sparse,",
+    "text_start": 2763.2,
+    "text_end": 2893.04
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_2886.0s.png",
+    "timestamp": 2886.0,
+    "text": "and J is C3, C4 free, then the problem admits a kernel on this many vertices, and it's basically a simple application of the previous two lemmas. If we have more than this many vertices in H, it's a trivial yes instance. If J has a vertex of degree 3K or more, it's a trivial yes instance, and now you combine all of this together. We know that S union T is of size at most 2K. We know that the neighborhood of S union T is of size at most 2K times 3K, which is roughly 6K squared. And now we know that the rest of the graph has at most that many vertices. So basically, you sum up those numbers, and you get this bound. All right. So how does this theorem imply the result that I promised you to start with? So that token jumping and token sliding admit a kernel with order k square vertices. I mean, it also holds for bipartisanship, but it's also a very simple application.",
+    "text_start": 2893.04,
+    "text_end": 2959.7599999999998
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_2955.0s.png",
+    "timestamp": 2955.0,
+    "text": "Kernel with order k square vertices. I mean, it also holds for bipartite C4 free graphs, right? Obviously, because they are C3, C4 free. So how do you get the kernel? Well, we know that J cannot contain more than 6K squared minus 2K vertices, and we know from another theorem, from another paper, that C3 free graphs with k squared over log k vertices must have an independent set of size at least k. And now we know that if H contains more than this many vertices, then we will get the S instance as well. Right? So it becomes an immediate consequence of the previous theorem, but the previous theorem is even more general than this corollary. So this corollary does not really use the full power of this theorem.",
+    "text_start": 2959.92,
+    "text_end": 3012.64
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_3012.0s.png",
+    "timestamp": 3012.0,
+    "text": "All right. That's it. I think I'm on time. If you have questions, I will take them now.",
+    "text_start": 3016.4,
+    "text_end": 3023.2799999999997
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_3018.0s.png",
+    "timestamp": 3018.0,
+    "text": "It was 55 minutes, right, for the talk? I did not go under the time. It's fine. We usually allow plus minus 10 minutes. That's all right. So I have a question about token sliding. Yes. So how crucial, what happens if one does not restrict the independent sets during the configuration to be not of the same size? Is that very critical for the difficulty or the easiness of the problem? Well, you have to be careful how you define that because in token sliding, sliding tokens cannot leave the graph. That's correct. But the independent set sequence, all the independent sets have to be the same size, right? If not, some token disappeared at some point and I'm not sure how it disappeared. Right? Because you start with something of size k and you're going to something of size k, you cannot leave the graph unless you define it in some way. So you will remain of size k throughout. But you can become slightly larger than k. But where does the new token come from? Okay. So there is a third rule that I did not tell you about, which is called token addition and removal. Under that rule, we actually allow you to remove vertices and add vertices as long as you remain an independent set of size at least k. Does that answer your question? Yeah. Yeah. Yeah. Yeah. Yeah. But in fact, it was shown that, but it was shown that so addition and removal is equivalent to token jumping. I see. It doesn't, it never makes sense to add more tokens to your graph if you don't need them. You're only making your life harder, intuitively speaking. So the other question that I had is, I mean, I heard I, so is it possible to view this whole problem on an exponential size graph where every vertex corresponds to an independent set in the original graph? And then you have edges between two vertices, if there is an edge between two vertices of the independent set, and now you're doing a reachability question. Is that a meaningful way to think about this? But that's exactly what we're doing. But so the way you define your adjacency, I think, so you mean you define, you make two independent sets adjacent if one can be reached from the other via a single slide or a single jump. Exactly. Yeah. One edge. Yeah. There is one pair U and B, which is adjacent. But that's exactly what we're doing. Okay. Okay. Yeah. Right. I mean, if you, because we're looking at it at algorithms here, we kind of forget the structural picture behind it, but this algorithm is finding a path in this graph that you're describing. Yeah. Yeah. That's it. And what we're saying is you can do it in FPT time or not, depending on the problem we're talking about. Hi, Amir. Hi. How are you? Yeah, I'm good. So I had a question. So do problems remain equally hard? If we have a restriction on the number of times we can move the token to a particular vertex? The number of times you can move a token to a particular vertex. Like the number of times the tokens can be moved to a vertex. Well, that's definitely going to change the complexity in at least intuitively speaking, right? Because now you're saying maybe it will, if you're bounding that by a constant, then you might be saying that I'm not allowing exponentially large sequences anymore. But in terms of exactly how the complexity changes, I don't have answers. I think it's a very nice question to pose. Even in terms of non-parameterized complexity, standard complexity, I think that that would be a very interesting question because it will definitely affect the behavior. I'm not sure exactly how yet. I don't know of any results that ask this particular question. Okay. So I had one more question in the W hardness result that you presented. So do you know what is",
+    "text_start": 3030.24,
+    "text_end": 3330.72
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_3330.0s.png",
+    "timestamp": 3330.0,
+    "text": "the length of the changes, actually the number of changes or flips that you make in your",
+    "text_start": 3330.72,
+    "text_end": 3339.28
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_3333.0s.png",
+    "timestamp": 3333.0,
+    "text": "independence set? This is just- Yes, yes, yes. We do. So here the number of changes is going to be very, it's basically going to be the shortest possible sequence. So it's basically going to be, so if you think about the simple construction, this one, it's basically literally going to be,",
+    "text_start": 3339.28,
+    "text_end": 3365.6800000000003
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_3363.0s.png",
+    "timestamp": 3363.0,
+    "text": "these guys are going to move here. So each is going to cost me one slide and then they're all going to- and now this guy is going to move here. And now I will pay one slide for each one here. Now this is the simplified version of it. Once you go to the complete version of it, you have some extra slides within the path, but you can also count those.",
+    "text_start": 3365.68,
+    "text_end": 3387.68
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_3384.0s.png",
+    "timestamp": 3384.0,
+    "text": "Okay. So, but does this mean that, so does this mean that at a particular vertex, we are placing the token at most once? In this case, yes. Okay. In this case, yes. Okay. So this problem should be hard even if we bound the number of times tokens can be moved to a vertex, right? Yes. Okay. Yes. So here in this case, yes, absolutely. Okay. Thanks. So Akanksha, I have a remark about your question. So if a vertex cannot get a token twice, then it somehow seems to be selecting disjoint independent sets, a sequence of them, and that may have some bearing on coloring, just a top level thought. So actually for the WHarness case that Amir presented, it is exactly the case, right? So we are not allowed to move the token like twice on the same vertex. Yeah. So I didn't get your point of moving. So getting this disjoint, so getting this disjoint independence, it's actually, because if you say, if you think of it from my, the way I thought about it, right, that you are actually trying to find a path in a large graph, very every vertex corresponds to an independent set. And you move from one independent set to another. So we can only move from one independent set to the other. If the changes is like in case of tokens sliding, it's one probably, yeah. So it looks to be that you're asking for a collection of independent sets, which are vertex disjoint. If the sequence of independent sets, which are vertex disjoint. No. So if I may, I think, I think Akansha's question would be more relevant in a place where we don't have a monotone sequence, meaning a sequence. So we need a version of the problem or some cases of the problem where a vertex has to be visited multiple times to find solutions. And that is known to be the case for some versions or some statements of the problem. And in fact, Akansha, so this is also, this was the crucial difference between piece-based completeness and NP completeness of sliding versus jumping in bipartite graphs. So it was because we were able to show that no vertex will be visited more than once. Okay. And the other problem. So that's why it's definitely an interesting question to pose, but you have to be careful in what context you pose it. Right. I don't know if that kind of settles, answers your question. Yes, yes, it does. All right. Thanks. You're welcome. Any more questions? I guess not.",
+    "text_start": 3388.3199999999997,
+    "text_end": 3620.4
+  },
+  {
+    "image_path": "C:\\Users\\lanaw\\Desktop\\Spring 2024-2025\\Rag systems\\Assignment5\\Video_Rag\\data\\keyframes\\images\\frame_3609.0s.png",
+    "timestamp": 3609.0,
+    "text": "Yeah. I don't think there are any more questions. I'll just once again, announce the parameterized algorithm 301 workshop, which is going to happen December in the link has been posted once again in the chat. Some advanced topics in parameterized complexity will be discussed. Those interested can have a look and register for it. And yeah, if there are some more questions, please ask away. So anyone can register for the school? Yes. Yes. Anyone can. Yeah. It's free and it's online and yeah, it's open to everyone. Awesome. So I can share it with my students as well. Of course, please do. Yeah, that will be good. And we assume some basic understanding of parameterized algorithms, but we have already shared a link on the page where students can go and go through some previous lectures in parameterized algorithms if they wish to just brace up or revise stuff. All right. So I guess, okay. I don't think there are any more questions. So I think this is a good time to wrap up. So thank you once again, Professor Amito for agreeing to give the talk. It was really nice to have you and it was really good to have something different than what we usually hear in every parameterized complexity talk, at least most of them. So, and yeah, these are really interesting problems to think upon. And thank you to the audience for being with us. And that's it for today. We wrap up. See you all next week. Thank you. Bye. Thank you. Bye-bye.",
+    "text_start": 3621.2,
+    "text_end": 3757.36
+  }
+]
